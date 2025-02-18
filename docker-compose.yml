@@ -1,0 +1,27 @@
+services:
+  banco:
+    container_name: banco
+    image: postgres:14
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: root
+    networks:
+      - teste-postgres
+  
+  aplicacao:
+    container_name: aplicacao
+    image: aplicacao:latest
+    tty: true
+    stdin_open: true
+    working_dir: /app
+    volumes:
+      - ./app:/app
+    networks:
+      - teste-postgres
+
+networks:
+  teste-postgres:
+    external: true
