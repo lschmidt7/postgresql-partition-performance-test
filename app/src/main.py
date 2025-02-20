@@ -1,4 +1,6 @@
 from db import Database
+from generators.leitura import Leitura
+from generators.leitura_dados import LeituraDados
 
 inserts = 10000000
 batch = 10000
@@ -8,49 +10,35 @@ database.connect()
 
 cur = database.get_cursor()
 
-sql = "INSERT INTO leitura (leitura_datahora) VALUES %s;"
+sql_leitura = "INSERT INTO leitura (leitura_datahora) VALUES %s;"
+sql_leitura_dados = "INSERT INTO leitura_dados (leitura_dados_chave, leitura_dados_valor, leitura_id) VALUES %s;"
 
-segundo = 1
-minuto = 0
-hora = 0
-dia = 1
-mes = 1
-ano = 2025
+leitura = Leitura()
+leitura_dados = LeituraDados()
+
+leitura_id = 1
 
 for i in range(0, inserts, batch):
 
     dados = []
-
     for j in range(batch):
-        dados.append(f"('{str(ano).zfill(2)}-{str(mes).zfill(2)}-{str(dia).zfill(2)} {str(hora).zfill(2)}:{str(minuto).zfill(2)}:{str(segundo).zfill(2)}')")
-
-        segundo += 1
-        
-        if segundo >= 60:
-            segundo = 0
-            minuto += 1
-        
-        if minuto >= 60:
-            minuto = 0
-            hora += 1
-        
-        if hora >= 24:
-            hora = 0
-            dia += 1
-        
-        if dia >= 28:
-            dia = 1
-            mes += 1
-        
-        if mes > 12:
-            mes = 1
-            ano += 1
-    
+        leitura_atual = leitura.mount()
+        dados.append(leitura_atual)
+        leitura.incrase()
     dados = ','.join(dados)
+    insert_leituras = sql_leitura % dados
 
-    insert = sql % dados
+    dados = []
+    for j in range(batch):
+        for k in range(10):
+            leitura_atual = leitura_dados.mount(k,leitura_id)
+            dados.append(leitura_atual)
+        leitura_id += 1
+    dados = ','.join(dados)
+    insert_leituras_dados = sql_leitura_dados % dados
 
-    cur.execute(insert)
+    cur.execute(insert_leituras)
+    cur.execute(insert_leituras_dados)
 
     database.commit()
 
