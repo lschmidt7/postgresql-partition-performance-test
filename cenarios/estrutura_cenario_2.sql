@@ -7,7 +7,7 @@ CREATE TABLE leitura (
     leitura_datahora TIMESTAMP NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS leitura_dados (
+CREATE TABLE leitura_dados (
     leitura_dados_id SERIAL PRIMARY KEY,
     leitura_dados_chave INTEGER,
     leitura_dados_valor FLOAT,
@@ -16,3 +16,5 @@ CREATE TABLE IF NOT EXISTS leitura_dados (
 );
 
 CREATE INDEX leitura_datahora_idx ON leitura (leitura_datahora);
+
+CREATE INDEX leitura_id_idx ON leitura_dados (leitura_id);

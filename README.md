@@ -1,5 +1,6 @@
 Esse repositório tem o propósito de medir o desempenho de leitura de registros de um banco de dados Postgres sob condição de uma certa carga de dados.
 O propósito é entender a melhor estratégia de indices e particionamentos para melhoria do desempenho.
+O objetivo principal é descobrir como esses recursos podem melhorar o desempenho de busca em tabelas (unidas por uma chave estrangeira).
 
 ## Estrutura
 
@@ -18,6 +19,25 @@ CREATE TABLE leitura_dados (
     leitura_id INTEGER NOT NULL,
     CONSTRAINT fk_leitura_id FOREIGN KEY (leitura_id) REFERENCES leitura(leitura_id)
 );
+```
+
+A estrutura original (E1) é a seguinte
+
+```sql
+CREATE TABLE leitura (
+    leitura_id SERIAL,
+    leitura_datahora TIMESTAMP NOT NULL,
+    PRIMARY KEY(leitura_id, leitura_datahora)
+) PARTITION BY RANGE(leitura_datahora);
+
+CREATE TABLE leitura_dados (
+    leitura_dados_id SERIAL PRIMARY KEY,
+    leitura_dados_chave INTEGER,
+    leitura_dados_valor FLOAT,
+    leitura_data DATE NOT NULL,
+    leitura_id INTEGER NOT NULL,
+    CONSTRAINT fk_leitura_id FOREIGN KEY (leitura_id) REFERENCES leitura(leitura_id)
+) PARTITION BY RANGE(leitura_data);
 ```
 
 Os indices utilizados
@@ -77,10 +97,9 @@ WHERE l.leitura_datahora >= '2029-05-23 00:00:00'
 ## Cenários
 
 * C1: EO
-* C2: EO + I1
-* C3: EO + I1 + I2
-* C4: EO + I1 + I2 + P1
-* C5: EO + I1 + I2 + P1 + P2
+* C2: EO + I1 + I2
+* C3: E1 + P1 + P2
+* C4: E1 + I1 + I2 + P1 + P2
 
 Obs: o particionamento em leitura_dados(leitura_id) visa imitar o particionamento referenciado existente no Oracle por meio de uma trigger no insert
 
@@ -88,7 +107,7 @@ Obs: o particionamento em leitura_dados(leitura_id) visa imitar o particionament
 
 Os resultados foram computados de cada consulta em relação a cada cenário.
 
-| Consultas | C1 | C2 | C3 | C4 | C5 |
-| --------- | -- | -- | -- | -- | -- |
-| Q1        |    |    |    |    |    |
-| Q2        |    |    |    |    |    |
+| Consultas | C1 | C2 | C3 | C4 |
+| --------- | -- | -- | -- | -- |
+| Q1        |    |    |    |    |
+| Q2        |    |    |    |    |
