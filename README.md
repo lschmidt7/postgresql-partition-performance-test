@@ -109,5 +109,6 @@ Os resultados foram computados de cada consulta em relação a cada cenário.
 
 | Consultas | C1 | C2 | C3 | C4 |
 | --------- | -- | -- | -- | -- |
-| Q1        |    |    |    |    |
-| Q2        |    |    |    |    |
+| Q1        | 179   |    |    |    |
+| Q2        | 5336   |    |    |    |
+| Q3        |    |    |    |    |

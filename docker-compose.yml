@@ -6,6 +6,7 @@ services:
     stdin_open: true
     volumes:
       - ./data:/var/lib/postgresql/data
+      - ./cenarios:/cenarios
     environment:
       POSTGRES_PASSWORD: root
     networks:

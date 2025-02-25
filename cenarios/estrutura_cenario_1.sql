@@ -1,4 +1,4 @@
-CREATE DATABASE teste;
+-- CREATE DATABASE teste;
 
 \c teste
 
