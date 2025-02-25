@@ -20,7 +20,7 @@
 		"body": [
 			"class $1:",
 			"",
-			"\tdef __ini__(self):",
+			"\tdef __init__(self):",
 			"\t\tpass",
 		]
 	}

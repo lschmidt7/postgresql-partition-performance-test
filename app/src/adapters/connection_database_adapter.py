@@ -1,10 +1,9 @@
 from psycopg2 import connect
 
-class Connection:
+class ConnectionDatabaseAdapter:
 
     def __init__(self):
         self.config = {
-            "dbname": "teste",
             "user": "postgres",
             "password": "root",
             "host": "banco",  # Ou IP do servidor
@@ -15,6 +14,7 @@ class Connection:
     
     def connect(self):
         self.conn = connect(**self.config)
+        self.conn.autocommit = True
         self.cursor = self.conn.cursor()
     
     def run(self, sql: str):

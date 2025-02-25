@@ -1,4 +1,4 @@
 class InsertManyTableUsecase:
 
-    def __ini__(self):
+    def __init__(self):
         pass

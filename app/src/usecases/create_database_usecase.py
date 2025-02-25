@@ -1,8 +1,12 @@
-from src.entities.database_entity import DatabaseEntity
+from entities.database_entity import DatabaseEntity
 
-from src.ports.database_connection_port import DatabaseConnectionPort
+from ports.database_connection_port import DatabaseConnectionPort
 
 class CreateDatabaseUsecase:
 
-    def __ini__(self, database_entity: DatabaseEntity, database_connection_port: DatabaseConnectionPort):
-        pass
+    def __init__(self, database_connection_port: DatabaseConnectionPort):
+        self.database_connection_port = database_connection_port
+
+    def execute(self, database_entity: DatabaseEntity):
+        sql = database_entity.get_create_sql()
+        self.database_connection_port.run(sql)
