@@ -3,18 +3,27 @@ from usecases.create_database_usecase import CreateDatabaseUsecase
 
 from entities.database_entity import DatabaseEntity
 
-from adapters.connection_database_adapter import ConnectionDatabaseAdapter
+from adapters.postgres_connection_adapter import PostgresConnectionAdapter
 
-connection_database_adapter = ConnectionDatabaseAdapter()
-connection_database_adapter.connect()
+from valueobjects.database_configuration import DatabaseConfiguration
+
+database_configuration = DatabaseConfiguration('postgres', 'root', 'banco', 5432)
+postgres_connection_adapter = PostgresConnectionAdapter(database_configuration)
+postgres_connection_adapter.connect()
 
 database_entity = DatabaseEntity('cloud')
 
-drop_database_usecase = DropDatabaseUsecase(connection_database_adapter)
+drop_database_usecase = DropDatabaseUsecase(postgres_connection_adapter)
 drop_database_usecase.execute(database_entity)
 
-create_database_usecase = CreateDatabaseUsecase(connection_database_adapter)
+create_database_usecase = CreateDatabaseUsecase(postgres_connection_adapter)
 create_database_usecase.execute(database_entity)
+
+database_configuration = DatabaseConfiguration('postgres', 'root', 'banco', 5432, 'cloud')
+postgres_connection_adapter = PostgresConnectionAdapter(database_configuration)
+postgres_connection_adapter.connect()
+
+
 
 # from app.src.adapters.connection import Database
 # from generators.leitura import Leitura

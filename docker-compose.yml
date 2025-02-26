@@ -22,6 +22,7 @@ services:
       - ./app:/app
     networks:
       - teste-postgres
+    command: ["/bin/bash", "-c", "python src/main.py"]
 
 networks:
   teste-postgres:

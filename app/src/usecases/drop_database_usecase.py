@@ -8,5 +8,5 @@ class DropDatabaseUsecase:
         self.connection = connection
     
     def execute(self, database_entity: DatabaseEntity) -> None:
-        sql = database_entity.get_drop_sql()
-        self.connection.run(sql)
+        database_name = database_entity.get_database_name()
+        self.connection.drop_database(database_name)
