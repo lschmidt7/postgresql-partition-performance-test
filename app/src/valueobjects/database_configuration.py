@@ -13,7 +13,7 @@ class DatabaseConfiguration:
         config = {
             "user": self.user,
             "password": self.password,
-            "host": self.database,
+            "host": self.host,
             "port": self.port
         }
         if self.database is not None:

@@ -4,8 +4,8 @@ from valueobjects.data_types import DataTypes
 
 class LeituraTableEntity(Table):
 
-    def __init__(self, name: str):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__('leitura')
         self.fields = Fields(
             [
                 Field('leitura_id', DataTypes.serial, True),

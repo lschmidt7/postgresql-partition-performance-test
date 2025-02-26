@@ -2,6 +2,8 @@ from usecases.drop_database_usecase import DropDatabaseUsecase
 from usecases.create_database_usecase import CreateDatabaseUsecase
 
 from entities.database_entity import DatabaseEntity
+from entities.leitura_table_entity import LeituraTableEntity
+from entities.leitura_dados_table_entity import LeituraDadosTableEntity
 
 from adapters.postgres_connection_adapter import PostgresConnectionAdapter
 
@@ -19,11 +21,15 @@ drop_database_usecase.execute(database_entity)
 create_database_usecase = CreateDatabaseUsecase(postgres_connection_adapter)
 create_database_usecase.execute(database_entity)
 
-database_configuration = DatabaseConfiguration('postgres', 'root', 'banco', 5432, 'cloud')
+database_configuration = DatabaseConfiguration('postgres', 'root', 'banco', 5432, database_entity.get_database_name())
 postgres_connection_adapter = PostgresConnectionAdapter(database_configuration)
 postgres_connection_adapter.connect()
 
+leitura_table_entity = LeituraTableEntity()
+postgres_connection_adapter.create_table(leitura_table_entity)
 
+leitura_dados_table_entity = LeituraDadosTableEntity()
+postgres_connection_adapter.create_table(leitura_dados_table_entity)
 
 # from app.src.adapters.connection import Database
 # from generators.leitura import Leitura

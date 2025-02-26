@@ -18,12 +18,9 @@ class Fields:
 
     def __init__(self, fields: List['Field'] = []):
         self.fields = fields
-
-    def to_list(self):
-        return ','.join([field.name for field in self.fields])
     
-    def add(self, field: 'Field'):
-        self.fields.append(field)
+    def __iter__(self):
+        return iter(self.fields)
 
 class Field:
 
@@ -36,6 +33,12 @@ class Constraints:
 
     def __init__(self, constraints: List['Constraint'] = []):
         self.constraints = constraints
+    
+    def __iter__(self):
+        return iter(self.constraints)
+
+    def __len__(self):
+        return len(self.constraints)
 
 class Constraint:
 
@@ -49,3 +52,6 @@ class PrimaryKeys:
 
     def __init__(self, names: List[str]):
         self.names = names
+    
+    def __len__(self):
+        return len(self.names)
